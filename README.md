@@ -59,3 +59,4 @@ npm run preview
 - **Press Desk**: [press@samosa-atelier.com](mailto:press@samosa-atelier.com)
 - **Phone**: +1 (415) 890-4270
 - **Location**: 442 Artisan Way, Industrial Culinary District, Suite 10, San Francisco, CA 94107
+
