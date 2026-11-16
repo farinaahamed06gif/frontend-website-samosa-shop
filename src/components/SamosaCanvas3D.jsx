@@ -44,7 +44,7 @@ export default function SamosaCanvas3D({ activeVariant, onCrunchPlay }) {
     if (mode === 'thermal') {
       // Thermodynamic false-color spectrum
       const gradient = ctx.createRadialGradient(512, 512, 50, 512, 512, 500);
-      gradient.addColorStop(0, '#ffffff'); // 185°C center
+      gradient.addColorStop(0, '#ffffff'); // 185°C core center
       gradient.addColorStop(0.2, '#f59e0b'); // 160°C
       gradient.addColorStop(0.5, '#dc2626'); // 110°C
       gradient.addColorStop(0.8, '#4f46e5'); // 50°C
@@ -63,63 +63,98 @@ export default function SamosaCanvas3D({ activeVariant, onCrunchPlay }) {
       return new THREE.CanvasTexture(canvas);
     }
 
-    // Base color gradient for flaky golden crust
+    // Rich, warm, golden fried crust base
     const baseCol = new THREE.Color(baseHex);
-    const darkerCol = baseCol.clone().multiplyScalar(0.7).getStyle();
-    const lighterCol = baseCol.clone().multiplyScalar(1.25).getStyle();
+    const darkerCol = baseCol.clone().multiplyScalar(0.68).getStyle();
+    const midCol = baseCol.clone().getStyle();
+    const highlightCol = baseCol.clone().multiplyScalar(1.28).getStyle();
 
-    const gradient = ctx.createLinearGradient(0, 0, 1024, 1024);
-    gradient.addColorStop(0, lighterCol);
-    gradient.addColorStop(0.5, baseCol.getStyle());
+    // Multi-stage radial/linear background gradient
+    const gradient = ctx.createRadialGradient(512, 450, 100, 512, 512, 700);
+    gradient.addColorStop(0, highlightCol);
+    gradient.addColorStop(0.55, midCol);
     gradient.addColorStop(1, darkerCol);
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, 1024, 1024);
 
-    // Micro blisters and fried bubbles
-    for (let i = 0; i < 2400; i++) {
+    // Warm ghee oil glaze patches (soft golden organic clouds)
+    for (let i = 0; i < 35; i++) {
       const x = Math.random() * 1024;
       const y = Math.random() * 1024;
-      const radius = 0.5 + Math.random() * 3.5;
-      const alpha = 0.08 + Math.random() * 0.25;
-
+      const rad = 60 + Math.random() * 160;
+      const radialGlaze = ctx.createRadialGradient(x, y, 0, x, y, rad);
+      radialGlaze.addColorStop(0, 'rgba(255, 215, 140, 0.18)');
+      radialGlaze.addColorStop(0.6, 'rgba(230, 140, 40, 0.08)');
+      radialGlaze.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = radialGlaze;
       ctx.beginPath();
-      ctx.arc(x, y, radius, 0, Math.PI * 2);
-      ctx.fillStyle = Math.random() > 0.4 
-        ? `rgba(255, 230, 180, ${alpha})` 
-        : `rgba(90, 35, 10, ${alpha * 0.8})`;
+      ctx.arc(x, y, rad, 0, Math.PI * 2);
       ctx.fill();
     }
 
-    // Hand-scattered Ajwain & Nigella seed flecks
-    ctx.fillStyle = 'rgba(40, 20, 10, 0.85)';
+    // Authentic fried blisters (clusters of crisp frying bubbles)
+    // 1. Medium to large blisters with 3D spherical shading
     for (let i = 0; i < 350; i++) {
       const x = Math.random() * 1024;
       const y = Math.random() * 1024;
-      const length = 2 + Math.random() * 4;
+      const radius = 3.5 + Math.random() * 7.5;
+
+      const blisterGrad = ctx.createRadialGradient(
+        x - radius * 0.3, y - radius * 0.3, radius * 0.1,
+        x, y, radius
+      );
+      blisterGrad.addColorStop(0, 'rgba(255, 238, 195, 0.65)');
+      blisterGrad.addColorStop(0.7, 'rgba(240, 170, 70, 0.35)');
+      blisterGrad.addColorStop(1, 'rgba(110, 45, 10, 0.45)');
+
+      ctx.fillStyle = blisterGrad;
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // 2. Micro crispy frying bubbles (thousands of tiny blister specks)
+    for (let i = 0; i < 3200; i++) {
+      const x = Math.random() * 1024;
+      const y = Math.random() * 1024;
+      const radius = 0.6 + Math.random() * 2.2;
+      const isHighlight = Math.random() > 0.35;
+
+      ctx.fillStyle = isHighlight 
+        ? `rgba(255, 235, 185, ${0.12 + Math.random() * 0.28})` 
+        : `rgba(95, 38, 10, ${0.10 + Math.random() * 0.22})`;
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Hand-scattered authentic Ajwain (carom) seed flecks
+    ctx.fillStyle = '#2a1408';
+    for (let i = 0; i < 380; i++) {
+      const x = Math.random() * 1024;
+      const y = Math.random() * 1024;
+      const length = 2.5 + Math.random() * 4.5;
       const angle = Math.random() * Math.PI;
 
       ctx.save();
       ctx.translate(x, y);
       ctx.rotate(angle);
+      
+      // Main seed body
       ctx.beginPath();
-      ctx.ellipse(0, 0, length, length * 0.45, 0, 0, Math.PI * 2);
+      ctx.ellipse(0, 0, length, length * 0.42, 0, 0, Math.PI * 2);
+      ctx.fillStyle = '#261206';
       ctx.fill();
-      ctx.restore();
-    }
 
-    // Subtle pastry lamination striations
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.06)';
-    ctx.lineWidth = 1.5;
-    for (let i = 0; i < 40; i++) {
+      // Subtle lighter central seed rib
+      ctx.strokeStyle = '#522912';
+      ctx.lineWidth = 0.8;
       ctx.beginPath();
-      const y = Math.random() * 1024;
-      ctx.moveTo(0, y);
-      ctx.bezierCurveTo(
-        340, y + (Math.random() - 0.5) * 80,
-        680, y + (Math.random() - 0.5) * 80,
-        1024, y
-      );
+      ctx.moveTo(-length * 0.6, 0);
+      ctx.lineTo(length * 0.6, 0);
       ctx.stroke();
+
+      ctx.restore();
     }
 
     const texture = new THREE.CanvasTexture(canvas);
@@ -138,13 +173,30 @@ export default function SamosaCanvas3D({ activeVariant, onCrunchPlay }) {
     ctx.fillStyle = '#808080';
     ctx.fillRect(0, 0, 512, 512);
 
-    for (let i = 0; i < 3000; i++) {
+    // Fine flaky pastry grain
+    for (let i = 0; i < 3500; i++) {
       const x = Math.random() * 512;
       const y = Math.random() * 512;
-      const rad = Math.random() * 2.5;
-      const isBump = Math.random() > 0.5;
+      const rad = 0.8 + Math.random() * 2.8;
+      const isBump = Math.random() > 0.45;
 
-      ctx.fillStyle = isBump ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)';
+      ctx.fillStyle = isBump ? 'rgba(255,255,255,0.28)' : 'rgba(0,0,0,0.22)';
+      ctx.beginPath();
+      ctx.arc(x, y, rad, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Elevated blister bumps
+    for (let i = 0; i < 280; i++) {
+      const x = Math.random() * 512;
+      const y = Math.random() * 512;
+      const rad = 2.5 + Math.random() * 5.0;
+
+      const grad = ctx.createRadialGradient(x, y, 0, x, y, rad);
+      grad.addColorStop(0, 'rgba(255, 255, 255, 0.45)');
+      grad.addColorStop(0.8, 'rgba(200, 200, 200, 0.15)');
+      grad.addColorStop(1, 'rgba(128, 128, 128, 0)');
+      ctx.fillStyle = grad;
       ctx.beginPath();
       ctx.arc(x, y, rad, 0, Math.PI * 2);
       ctx.fill();
@@ -156,127 +208,96 @@ export default function SamosaCanvas3D({ activeVariant, onCrunchPlay }) {
     return texture;
   };
 
-  // Build the parametric Samosa Geometry (Tetrahedral Puffed Geometry)
+  // Build the parametric Samosa Geometry — Fat, Thick, Stuffed & Continuous
   const buildSamosaGeometry = () => {
-    // A tetrahedral pyramid with 3 bowed side faces and 1 bowed base
     const geom = new THREE.BufferGeometry();
-    const resolution = 28; // Grid density per face
+    const vSegments = 64; // Height slices
+    const uSegments = 72; // Radial slices
 
     const positions = [];
-    const normals = [];
     const uvs = [];
+    const indices = [];
 
-    // Key vertices of the equilateral base and apex
-    const h = 2.2;
-    const r = 1.65;
-    const apex = new THREE.Vector3(0, h * 0.55, 0);
+    // Continuous parametric grid
+    for (let i = 0; i <= vSegments; i++) {
+      const v = i / vSegments; // 0 (bottom pole) to 1 (apex pole)
 
-    const b0 = new THREE.Vector3(
-      r * Math.cos(0),
-      -h * 0.45,
-      r * Math.sin(0)
-    );
-    const b1 = new THREE.Vector3(
-      r * Math.cos((2 * Math.PI) / 3),
-      -h * 0.45,
-      r * Math.sin((2 * Math.PI) / 3)
-    );
-    const b2 = new THREE.Vector3(
-      r * Math.cos((4 * Math.PI) / 3),
-      -h * 0.45,
-      r * Math.sin((4 * Math.PI) / 3)
-    );
-
-    // Helper to generate a puffed triangular face
-    const generateFace = (p0, p1, p2, isBase = false) => {
-      const faceCenter = new THREE.Vector3()
-        .add(p0)
-        .add(p1)
-        .add(p2)
-        .divideScalar(3);
-
-      const faceNormal = new THREE.Vector3()
-        .crossVectors(
-          new THREE.Vector3().subVectors(p1, p0),
-          new THREE.Vector3().subVectors(p2, p0)
-        )
-        .normalize();
-
-      for (let i = 0; i < resolution; i++) {
-        for (let j = 0; j < resolution - i; j++) {
-          const u1 = i / resolution;
-          const v1 = j / resolution;
-
-          const u2 = (i + 1) / resolution;
-          const v2 = j / resolution;
-
-          const u3 = i / resolution;
-          const v3 = (j + 1) / resolution;
-
-          const calcPoint = (u, v) => {
-            const w = 1 - u - v;
-            const pt = new THREE.Vector3()
-              .addScaledVector(p0, w)
-              .addScaledVector(p1, u)
-              .addScaledVector(p2, v);
-
-            // Add convex puffiness
-            const puffWeight = Math.sin(u * Math.PI) * Math.sin(v * Math.PI) * Math.sin(w * Math.PI);
-            const puffMagnitude = isBase ? 0.35 : 0.65;
-            pt.addScaledVector(faceNormal, puffWeight * puffMagnitude);
-
-            // Subtle handcrafted asymmetry
-            const noise = (Math.sin(pt.x * 4.0) * Math.cos(pt.y * 4.0)) * 0.035;
-            pt.addScaledVector(faceNormal, noise);
-
-            // Crimp effect along the bottom edges
-            if (!isBase && pt.y < -h * 0.35) {
-              const crimp = Math.sin(pt.x * 24.0 + pt.z * 24.0) * 0.04;
-              pt.addScaledVector(faceNormal, crimp);
-            }
-
-            return pt;
-          };
-
-          const pt1 = calcPoint(u1, v1);
-          const pt2 = calcPoint(u2, v2);
-          const pt3 = calcPoint(u3, v3);
-
-          // Triangle 1
-          positions.push(pt1.x, pt1.y, pt1.z);
-          positions.push(pt2.x, pt2.y, pt2.z);
-          positions.push(pt3.x, pt3.y, pt3.z);
-
-          uvs.push(u1, v1);
-          uvs.push(u2, v2);
-          uvs.push(u3, v3);
-
-          // Second triangle for the quad cell if valid
-          if (i + j + 1 < resolution) {
-            const u4 = (i + 1) / resolution;
-            const v4 = (j + 1) / resolution;
-            const pt4 = calcPoint(u4, v4);
-
-            positions.push(pt2.x, pt2.y, pt2.z);
-            positions.push(pt4.x, pt4.y, pt4.z);
-            positions.push(pt3.x, pt3.y, pt3.z);
-
-            uvs.push(u2, v2);
-            uvs.push(u4, v4);
-            uvs.push(u3, v3);
-          }
-        }
+      // Vertical position with curved bottom dome
+      let y = -1.15 + 2.45 * v;
+      if (v < 0.16) {
+        // Soft rounded convex bottom base
+        y += -0.12 * Math.cos((v / 0.16) * (Math.PI / 2));
       }
-    };
 
-    // 3 Upright faces
-    generateFace(b0, b1, apex);
-    generateFace(b1, b2, apex);
-    generateFace(b2, b0, apex);
+      // Radial profile — Engineered to be fat, thick, and filled with stuffing
+      let baseRadius = 0;
+      if (v <= 0.001) {
+        baseRadius = 0;
+      } else if (v < 0.18) {
+        // Rapid expansion into wide, sturdy base
+        const domeProg = Math.sin((v / 0.18) * (Math.PI / 2));
+        baseRadius = 1.95 * Math.pow(domeProg, 0.45);
+      } else {
+        // Plump belly profile: maintains girth throughout the lower and middle body
+        const topRatio = (1 - v);
+        const taper = Math.pow(topRatio, 0.62) * 1.52 + 0.24 * Math.sin(topRatio * Math.PI);
+        baseRadius = 1.95 * taper;
+      }
 
-    // 1 Bottom face
-    generateFace(b0, b2, b1, true);
+      for (let j = 0; j <= uSegments; j++) {
+        const u = j / uSegments;
+        const theta = u * Math.PI * 2;
 
+        // 3-fold equilateral symmetry
+        // Corners at 0, 120, 240 deg (0, 2pi/3, 4pi/3)
+        // Faces at 60, 180, 300 deg (pi/3, pi, 5pi/3)
+        const twoThirdsPi = (2 * Math.PI) / 3;
+        const cornerRel = ((theta % twoThirdsPi) + twoThirdsPi) % twoThirdsPi - (Math.PI / 3);
+
+        // Smooth rounded triangular envelope (no sharp knife creases)
+        const triShape = 1.0 + 0.34 * Math.cos(3 * theta) + 0.05 * Math.cos(6 * theta);
+
+        // FAT & FILLED BULGE:
+        // The dense potato & pea filling pushes each face outward like a puffed pillow!
+        const faceBulge = 0.44 * Math.pow(Math.cos(1.5 * cornerRel), 2) * Math.sin(Math.PI * Math.pow(v, 0.65));
+
+        // Artisanal hand-folded base seam (crimped patti rim)
+        const crimpSeam = 0.045 * Math.sin(15 * theta) * Math.exp(-Math.pow((v - 0.13) / 0.045, 2));
+
+        // Subtle organic handcrafted variation
+        const organic = 0.025 * (Math.sin(3 * theta + 4 * y) * Math.cos(4 * theta - 2 * y));
+
+        // Total calculated radius
+        let finalRadius = baseRadius * (triShape + faceBulge + crimpSeam + organic);
+
+        // Apex pinch (where the dough is folded and sealed together at the top)
+        let pinchZ = 1.0;
+        if (v > 0.70) {
+          pinchZ = 1.0 - 0.36 * ((v - 0.70) / 0.30);
+        }
+
+        const x = finalRadius * Math.cos(theta);
+        const z = finalRadius * Math.sin(theta) * pinchZ;
+
+        positions.push(x, y, z);
+        uvs.push(u, v);
+      }
+    }
+
+    // Build triangular faces with continuous indexing
+    for (let i = 0; i < vSegments; i++) {
+      for (let j = 0; j < uSegments; j++) {
+        const a = i * (uSegments + 1) + j;
+        const b = (i + 1) * (uSegments + 1) + j;
+        const c = (i + 1) * (uSegments + 1) + (j + 1);
+        const d = i * (uSegments + 1) + (j + 1);
+
+        indices.push(a, b, d);
+        indices.push(b, c, d);
+      }
+    }
+
+    geom.setIndex(indices);
     geom.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
     geom.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
     geom.computeVertexNormals();
@@ -284,73 +305,79 @@ export default function SamosaCanvas3D({ activeVariant, onCrunchPlay }) {
     return geom;
   };
 
-  // Build interior spiced core filling
+  // Build interior spiced core filling — Packed with potatoes, peas, and seeds
   const buildCoreFilling = () => {
     const group = new THREE.Group();
 
-    // Spiced Potato Mass (Central irregular volume)
-    const potatoGeom = new THREE.DodecahedronGeometry(0.85, 2);
+    // Spiced Potato Mass (Chunky, stuffed irregular volume)
+    const potatoGeom = new THREE.DodecahedronGeometry(1.22, 2);
     const pos = potatoGeom.attributes.position;
     for (let i = 0; i < pos.count; i++) {
       const vx = pos.getX(i);
       const vy = pos.getY(i);
       const vz = pos.getZ(i);
-      const deform = 1 + (Math.sin(vx * 5) * Math.cos(vy * 5) * Math.sin(vz * 5)) * 0.15;
-      pos.setXYZ(i, vx * deform, vy * deform * 1.1, vz * deform);
+      const deform = 1 + (Math.sin(vx * 4.5) * Math.cos(vy * 4.5) * Math.sin(vz * 4.5)) * 0.16;
+      pos.setXYZ(i, vx * deform * 1.05, vy * deform * 1.15, vz * deform * 1.05);
     }
     potatoGeom.computeVertexNormals();
 
     const potatoMat = new THREE.MeshStandardMaterial({
-      color: 0xd4a017, // Turmeric potato gold
-      roughness: 0.9,
+      color: 0xdf9e12, // Rich turmeric potato gold
+      roughness: 0.88,
       metalness: 0.05,
     });
     const potatoMesh = new THREE.Mesh(potatoGeom, potatoMat);
-    potatoMesh.position.y = -0.15;
+    potatoMesh.position.y = -0.1;
     group.add(potatoMesh);
 
-    // English Garden Peas (Vibrant green glossy spheres)
-    const peaGeom = new THREE.SphereGeometry(0.12, 16, 16);
+    // English Garden Peas (Vibrant green glossy spheres scattered inside)
+    const peaGeom = new THREE.SphereGeometry(0.14, 16, 16);
     const peaMat = new THREE.MeshStandardMaterial({
-      color: 0x4ade80,
-      roughness: 0.3,
-      metalness: 0.1,
+      color: 0x3cb043,
+      roughness: 0.28,
+      metalness: 0.12,
     });
 
     const peaOffsets = [
-      [0.45, 0.1, 0.3],
-      [-0.4, -0.2, 0.4],
-      [0.1, 0.45, -0.3],
-      [-0.35, 0.3, -0.2],
-      [0.3, -0.4, -0.25],
-      [-0.1, -0.1, 0.55],
-      [0.5, -0.15, -0.2],
-      [-0.45, 0.1, 0.2]
+      [0.65, 0.15, 0.4],
+      [-0.55, -0.25, 0.55],
+      [0.15, 0.65, -0.35],
+      [-0.45, 0.45, -0.3],
+      [0.45, -0.45, -0.35],
+      [-0.15, -0.15, 0.75],
+      [0.7, -0.2, -0.25],
+      [-0.65, 0.15, 0.3],
+      [0.35, 0.55, 0.45],
+      [-0.25, 0.25, 0.65],
+      [0.55, -0.1, 0.5],
+      [-0.5, -0.35, -0.4],
+      [0.1, -0.55, 0.4],
+      [-0.3, 0.6, 0.2]
     ];
 
     peaOffsets.forEach(([x, y, z]) => {
       const pea = new THREE.Mesh(peaGeom, peaMat);
       pea.position.set(x, y, z);
-      pea.scale.set(1 + Math.random() * 0.3, 1 + Math.random() * 0.3, 1 + Math.random() * 0.3);
+      pea.scale.set(1 + Math.random() * 0.25, 1 + Math.random() * 0.25, 1 + Math.random() * 0.25);
       group.add(pea);
     });
 
     // Toasted Cumin & Coriander seeds
-    const seedGeom = new THREE.CylinderGeometry(0.02, 0.02, 0.08, 6);
+    const seedGeom = new THREE.CylinderGeometry(0.025, 0.025, 0.1, 6);
     const seedMat = new THREE.MeshStandardMaterial({
       color: 0x3d2314,
-      roughness: 0.6,
+      roughness: 0.55,
     });
 
-    for (let i = 0; i < 28; i++) {
+    for (let i = 0; i < 42; i++) {
       const seed = new THREE.Mesh(seedGeom, seedMat);
       const phi = Math.random() * Math.PI * 2;
       const theta = Math.random() * Math.PI;
-      const radius = 0.72 + Math.random() * 0.18;
+      const radius = 0.95 + Math.random() * 0.26;
 
       seed.position.set(
         radius * Math.sin(theta) * Math.cos(phi),
-        radius * Math.cos(theta) * 0.9 - 0.1,
+        radius * Math.cos(theta) * 0.95 - 0.1,
         radius * Math.sin(theta) * Math.sin(phi)
       );
       seed.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
@@ -362,7 +389,7 @@ export default function SamosaCanvas3D({ activeVariant, onCrunchPlay }) {
 
   // Build rising convection steam particle system
   const buildSteamSystem = () => {
-    const particleCount = 50;
+    const particleCount = 55;
     const geom = new THREE.BufferGeometry();
     const positions = new Float32Array(particleCount * 3);
     const velocities = [];
@@ -383,10 +410,9 @@ export default function SamosaCanvas3D({ activeVariant, onCrunchPlay }) {
     const texture = new THREE.CanvasTexture(canvas);
 
     for (let i = 0; i < particleCount; i++) {
-      // Spawn near apex or base vent
-      positions[i * 3 + 0] = (Math.random() - 0.5) * 0.4;
+      positions[i * 3 + 0] = (Math.random() - 0.5) * 0.45;
       positions[i * 3 + 1] = 1.0 + Math.random() * 1.5;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 0.4;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 0.45;
 
       velocities.push({
         vx: (Math.random() - 0.5) * 0.005,
@@ -402,7 +428,7 @@ export default function SamosaCanvas3D({ activeVariant, onCrunchPlay }) {
     geom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
     const material = new THREE.PointsMaterial({
-      size: 0.65,
+      size: 0.72,
       map: texture,
       transparent: true,
       opacity: 0.55,
@@ -428,8 +454,8 @@ export default function SamosaCanvas3D({ activeVariant, onCrunchPlay }) {
     sceneRef.current = scene;
 
     // 2. Camera with precise field of view
-    const camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 100);
-    camera.position.set(0, 0.8, 5.2);
+    const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
+    camera.position.set(0, 0.7, 5.4);
     cameraRef.current = camera;
 
     // 3. Renderer with high DPR and tone mapping
@@ -441,7 +467,7 @@ export default function SamosaCanvas3D({ activeVariant, onCrunchPlay }) {
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.1;
+    renderer.toneMappingExposure = 1.15;
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     rendererRef.current = renderer;
@@ -450,23 +476,23 @@ export default function SamosaCanvas3D({ activeVariant, onCrunchPlay }) {
     container.appendChild(renderer.domElement);
 
     // 4. Lighting: Culinary Studio 3-Point Setup
-    const ambientLight = new THREE.AmbientLight(0xfff6ea, 0.7);
+    const ambientLight = new THREE.AmbientLight(0xfff6ea, 0.85);
     scene.add(ambientLight);
 
-    // Warm Key Light (Highlighting crisp golden surface)
-    const keyLight = new THREE.DirectionalLight(0xfff1dc, 2.4);
-    keyLight.position.set(4, 5, 4);
+    // Warm Key Light (Highlighting crisp golden surface and puffy contours)
+    const keyLight = new THREE.DirectionalLight(0xffeed6, 2.6);
+    keyLight.position.set(4.5, 5, 4.5);
     keyLight.castShadow = true;
     scene.add(keyLight);
 
-    // Cool Rim Light (defining sharp pastry edges)
-    const rimLight = new THREE.DirectionalLight(0x38bdf8, 1.2);
-    rimLight.position.set(-4, 3, -4);
+    // Cool Rim Light (defining sculptural pastry curves)
+    const rimLight = new THREE.DirectionalLight(0x38bdf8, 1.1);
+    rimLight.position.set(-4.5, 3.5, -4);
     scene.add(rimLight);
 
-    // Under-bounce warm reflector
-    const bounceLight = new THREE.PointLight(0xd97706, 1.5, 8);
-    bounceLight.position.set(0, -2, 2);
+    // Under-bounce warm ghee reflector
+    const bounceLight = new THREE.PointLight(0xd97706, 1.8, 9);
+    bounceLight.position.set(0, -2.5, 2.5);
     scene.add(bounceLight);
 
     // 5. Build Samosa Object Group
@@ -482,9 +508,9 @@ export default function SamosaCanvas3D({ activeVariant, onCrunchPlay }) {
     const crustMaterial = new THREE.MeshStandardMaterial({
       map: crustTexture,
       bumpMap: bumpMap,
-      bumpScale: 0.045,
-      roughness: 0.48,
-      metalness: 0.08,
+      bumpScale: 0.038,
+      roughness: 0.44,
+      metalness: 0.05,
       side: THREE.DoubleSide,
     });
 
@@ -596,7 +622,7 @@ export default function SamosaCanvas3D({ activeVariant, onCrunchPlay }) {
       if (autoRotate && !isDraggingRef.current) {
         samosaGroup.rotation.y += rotationSpeed;
         // Subtle floating breath motion
-        samosaGroup.position.y = Math.sin(elapsedTime * 1.5) * 0.06;
+        samosaGroup.position.y = Math.sin(elapsedTime * 1.5) * 0.05;
       }
 
       // Steam Particle Physics
@@ -616,7 +642,7 @@ export default function SamosaCanvas3D({ activeVariant, onCrunchPlay }) {
           // Recycle particle when it climbs above 3.5m
           if (positions[i * 3 + 1] > 3.2 || lifetimes[i] > 1.0) {
             positions[i * 3 + 0] = (Math.random() - 0.5) * 0.35;
-            positions[i * 3 + 1] = 0.9 + Math.random() * 0.2;
+            positions[i * 3 + 1] = 0.95 + Math.random() * 0.2;
             positions[i * 3 + 2] = (Math.random() - 0.5) * 0.35;
             lifetimes[i] = 0;
           }
@@ -684,7 +710,7 @@ export default function SamosaCanvas3D({ activeVariant, onCrunchPlay }) {
       if (coreGroup) coreGroup.visible = false;
     } 
     else if (viewMode === 'anatomy') {
-      // Cutaway / exploded cross-section mode
+      // Cutaway / exploded cross-section mode revealing fat filled core
       crustMesh.visible = true;
       crustMesh.material.wireframe = false;
       crustMesh.material.map = createPastryTexture(activeVariant.crustColor, 'standard');
@@ -721,7 +747,7 @@ export default function SamosaCanvas3D({ activeVariant, onCrunchPlay }) {
       samosaGroupRef.current.rotation.set(0, 0, 0);
     }
     if (cameraRef.current) {
-      cameraRef.current.position.set(0, 0.8, 5.2);
+      cameraRef.current.position.set(0, 0.7, 5.4);
     }
   };
 
@@ -856,4 +882,3 @@ export default function SamosaCanvas3D({ activeVariant, onCrunchPlay }) {
     </div>
   );
 }
-
