@@ -1,0 +1,98 @@
+export const SAMOSA_VARIANTS = [
+  {
+    id: 'heritage-potato',
+    name: 'Heritage Golden Russet',
+    subheading: 'Classic Ajwain Crust / Heirloom Yukon Potato / Cumin Temper',
+    crustColor: 0xdc8724,
+    thermalColor: 0xff6b35,
+    spiceScore: '3.5 / 5.0',
+    layers: 72,
+    acousticCrunch: '64 dB',
+    coreTemp: '84°C',
+    crustThickness: '1.8 mm',
+    price: 4.50,
+    accentHex: '#dc8724',
+    description: 'Triple-cooked heirloom russet potatoes folded with hand-crushed coriander seeds, roasted cumin, amchur (green mango powder), and mountain-grown green peas. Encased in a cold-pressed ghee laminated crust infused with wild ajwain.',
+    notes: ['Heirloom Yukon Gold', 'Whole Cumin Temper', 'Amchur Acidity', 'Wild Carom (Ajwain)'],
+    dipPairing: '24-Hour Tamarind & Medjool Date Glaze',
+  },
+  {
+    id: 'truffle-paneer',
+    name: 'Truffle & Smoked Malai Paneer',
+    subheading: 'Charcoal-Flaked Pastry / Black Winter Truffle / Cultured Cream',
+    crustColor: 0xa37038,
+    thermalColor: 0x9333ea,
+    spiceScore: '2.0 / 5.0',
+    layers: 96,
+    acousticCrunch: '68 dB',
+    coreTemp: '82°C',
+    crustThickness: '1.6 mm',
+    price: 6.25,
+    accentHex: '#c084fc',
+    description: 'Slow-smoked artisan malai paneer infused with Italian black winter truffle emulsion, roasted tellicherry peppercorns, and fresh fenugreek leaves. Laminated with cold clarified butter for glass-like acoustic shatter.',
+    notes: ['Black Summer Truffle', 'Smoked Malai Curd', 'Cracked Tellicherry', 'Toasted Methi'],
+    dipPairing: 'Mint-Cilantro & Cold-Pressed Olive Emulsion',
+  },
+  {
+    id: 'smoked-jackfruit',
+    name: 'Smoked Jackfruit & Wild Morel',
+    subheading: 'Kashmiri Saffron Crust / Braised Wild Morel / Anardana Reduction',
+    crustColor: 0xc25e2e,
+    thermalColor: 0xef4444,
+    spiceScore: '4.2 / 5.0',
+    layers: 80,
+    acousticCrunch: '66 dB',
+    coreTemp: '86°C',
+    crustThickness: '1.7 mm',
+    price: 5.75,
+    accentHex: '#f97316',
+    description: 'Slow-braised young jackfruit pulled and caramelized with Himalayan wild morels, deglazed with sun-dried pomegranate reduction (anardana), and finished with stone-ground garam masala in a golden turmeric pastry envelope.',
+    notes: ['Braised Tender Jackfruit', 'Himalayan Morel', 'Sun-Dried Pomegranate', 'Kashmiri Chili'],
+    dipPairing: 'Fermented Garlic & Guntur Chili Oil',
+  },
+  {
+    id: 'charred-corn-habanero',
+    name: 'Charred Sweet Corn & Habanero',
+    subheading: 'Smoked Paprika Pastry / Fire-Roasted Kernels / Aged Cheddar',
+    crustColor: 0xd97706,
+    thermalColor: 0xf59e0b,
+    spiceScore: '4.8 / 5.0',
+    layers: 64,
+    acousticCrunch: '62 dB',
+    coreTemp: '85°C',
+    crustThickness: '1.9 mm',
+    price: 5.25,
+    accentHex: '#eab308',
+    description: 'Charred sweet bi-color corn folded with roasted habanero relish, lime zest, sharp cave-aged cheddar curd, and toasted cumin. Encased in a smoked paprika and black sesame crust.',
+    notes: ['Wood-Fired Sweet Corn', 'Smoked Habanero Mash', 'Cave-Aged Curd', 'Black Sesame Rim'],
+    dipPairing: 'Avocado, Kaffir Lime & Cilantro Crema',
+  }
+];
+
+export const ATELIER_SPECS = {
+  name: 'THE SAMOSA ATELIER',
+  tagline: 'Artisanal Geometry & Flavour Engineering',
+  established: 2021,
+  address: {
+    line1: '442 Artisan Way',
+    district: 'Industrial Culinary District, Suite 10',
+    city: 'San Francisco, CA 94107',
+    coordinates: '37.7749° N, 122.4194° W'
+  },
+  contact: {
+    email: 'concierge@samosa-atelier.com',
+    ordersEmail: 'kitchen@samosa-atelier.com',
+    pressEmail: 'press@samosa-atelier.com',
+    phone: '+1 (415) 890-4270',
+    hotline: '+1 (415) 890-4271'
+  },
+  hours: [
+    { days: 'Tuesday — Thursday', times: '11:30 — 21:00' },
+    { days: 'Friday — Saturday', times: '11:00 — 22:30' },
+    { days: 'Sunday', times: '11:00 — 20:00' },
+    { days: 'Monday', times: 'Atelier Dark Room (Prep & R&D)' }
+  ],
+  fryingOil: 'Cold-Pressed High-Smoke Groundnut & Ghee Blend (182°C Monitored)',
+  batchCadence: 'Freshly dropped every 18 minutes in limited batches of 24 units'
+};
+
